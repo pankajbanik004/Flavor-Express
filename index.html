@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ORDER-NOW</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #121212; /* Dark mode background */
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-y: auto;
+      padding: 20px 0;
+    }
+
+    .container {
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+    }
+
+    .header h1 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin: 15px 0;
+    }
+
+    .tabs button {
+      background: none;
+      border: none;
+      font-size: 14px;
+      margin: 0 10px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .tabs button.active {
+      border-bottom: 2px solid #ff6f00;
+      font-weight: bold;
+    }
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .card {
+      background-color: #1e1e1e;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 15px;
+    }
+
+    .card-content {
+      margin-top: 10px;
+    }
+
+    .card-content h2 {
+      font-size: 16px;
+      margin: 10px 0;
+    }
+
+    .card-content p {
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    .card-content .quantity {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .quantity button {
+      background: #ff6f00;
+      border: none;
+      padding: 5px 10px;
+      color: white;
+      border-radius: 50%;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .quantity span {
+      font-size: 16px;
+    }
+
+    .total-price {
+      text-align: right;
+      margin-top: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #ff6f00;
+    }
+
+    .buy-now {
+      background: #ff6f00;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 15px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 14px;
+      width: 100%;
+    }
+
+    .summary {
+      background-color: #1e1e1e;
+      border-radius: 15px;
+      padding: 15px;
+      margin-top: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .summary-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .summary-item img {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      margin-right: 10px;
+    }
+
+    .summary-item div {
+      flex: 1;
+    }
+
+    .summary-item span {
+      font-size: 14px;
+      font-weight: bold;
+      color: #ff6f00;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>Welcome, Pankaj Restro</h1>
+      <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      
+      <button data-tab="todays-special">Today's Special</button>
+      
+    </div>
+
+    <!-- Menu -->
+    <div class="menu" id="menu">
+      <!-- Cards will be dynamically inserted here -->
+    </div>
+
+    <!-- Summary Section -->
+    <div class="summary" id="summary">
+      <h2>Order Summary</h2>
+      <!-- Summary items will be dynamically inserted here -->
+    </div>
+  </div>
+
+  <!-- FontAwesome Icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <!-- JavaScript -->
+  <script>
+    // Example data for menu items
+    const menuItems = [
+      {
+        name: "Our Signature Menu",
+        description: "Indulge in the ultimate comfort food experience with our delicious offerings.",
+        image: "download (59).jpeg",
+        quantity: 0,
+        price: 299.00
+      },
+      {
+        name: "Farm House Pizza",
+        description: "Delicious pizza topped with fresh veggies and cheese. A perfect choice for pizza lovers.",
+        image: "Homemade Paneer Pizza Recipe - Khaddoroshik.jpeg",
+        quantity: 0,
+        price: 109.00
+      },
+      {
+        name: "Apple Rush",
+        description: "Refreshing apple juice with a hint of mint. Perfect for a hot day.",
+        image: "Have a cocktail with the girls or have a drink with the guys at Bubbas_.jpeg",
+        quantity: 0,
+        price: 79.00
+      },
+      {
+        name: "Noodles",
+        description: "Hot and Spicy Noodles.jpeg.",
+        image: "Hot and Spicy Noodles.jpeg",
+        quantity: 0,
+        price: 95.00
+      },
+      {
+        name: "Momo's",
+        description: "Homemade Vegan Dumplings_Potstickers —  Momo's.",
+        image: "Homemade Vegan Dumplings_Potstickers — Madeline Lu.jpeg",
+        quantity: 0,
+        price: 70.00
+      },
+      {
+        name: "Green Matcha.",
+        description: "Green Matcha.",
+        image: "Green Matcha.jpeg",
+        quantity: 0,
+        price: 90.00
+      },
+      {
+        name: "barbecue food",
+        description: "barbecue food.",
+        image: "barbecue food.jpeg",
+        quantity: 0,
+        price: 200.00
+      },
+      {
+        name: " Manchurian.",
+        description: "Savor the Spicy Delight of Manchurian.",
+        image: "manchu.jpeg",
+        quantity: 0,
+        price: 100.00
+      },
+      {
+        name: " Strawberry Pastry!",
+        description: "Indulge in Our Heavenly Strawberry Pastry.",
+        image: "cake.jpeg",
+        quantity: 0,
+        price: 70.00
+      },
+      {
+        name: "Taste Buds",
+        description: "Taste Buds roll.",
+        image: "Taste Buds.jpeg",
+        quantity: 0,
+        price: 60.00
+      },
+    ];
+
+    const menuContainer = document.getElementById("menu");
+    const summaryContainer = document.getElementById("summary");
+
+    // Function to render menu items
+    function renderMenu(items) {
+      menuContainer.innerHTML = ""; // Clear the menu
+      items.forEach((item, index) => {
+        const card = document.createElement("div");
+        card.classList.add("card");
+        card.innerHTML = `
+          <img src="${item.image}" alt="${item.name}">
+          <div class="card-content">
+            <h2>${item.name}</h2>
+            <p>${item.description}</p>
+            <div class="quantity">
+              <button onclick="changeQuantity(${index}, -1)">-</button>
+              <span id="quantity-${index}">${item.quantity}</span>
+              <button onclick="changeQuantity(${index}, 1)">+</button>
+            </div>
+            <div class="total-price" id="total-price-${index}">Total: ₹${(item.quantity * item.price).toFixed(2)}</div>
+          </div>
+        `;
+        menuContainer.appendChild(card);
+      });
+    }
+
+
+     // Sound Effects
+     const buttonSound = new Audio("glass-clink-57538.mp3");
+
+function playSound() {
+  buttonSound.play();
+}
+
+// Add sound effect to buttons
+document.addEventListener("click", (event) => {
+  if (event.target.tagName === "BUTTON") {
+    playSound();
+  }
+});
+
+    // Function to render summary
+    function renderSummary(items) {
+      summaryContainer.innerHTML = "<h2>Order Summary</h2>"; // Clear the summary
+      let grandTotal = 0;
+
+      items.forEach(item => {
+        if (item.quantity > 0) {
+          const summaryItem = document.createElement("div");
+          summaryItem.classList.add("summary-item");
+          grandTotal += item.quantity * item.price;
+
+          summaryItem.innerHTML = `
+            <img src="${item.image}" alt="${item.name}">
+            <div>
+              <strong>${item.name}</strong><br>
+              Quantity: ${item.quantity} | Price: ₹${item.price.toFixed(2)}
+            </div>
+            <span>₹${(item.quantity * item.price).toFixed(2)}</span>
+          `;
+          summaryContainer.appendChild(summaryItem);
+        }
+      });
+
+      const grandTotalElement = document.createElement("div");
+      grandTotalElement.style.textAlign = "right";
+      grandTotalElement.style.fontWeight = "bold";
+      grandTotalElement.style.fontSize = "16px";
+      grandTotalElement.style.color = "#ff6f00";
+      grandTotalElement.textContent = `Grand Total: ₹${grandTotal.toFixed(2)}`;
+      summaryContainer.appendChild(grandTotalElement);
+    }
+
+    // Function to change quantity and update total
+    function changeQuantity(index, change) {
+      if (menuItems[index].quantity + change >= 0) {
+        menuItems[index].quantity += change;
+        renderMenu(menuItems);
+        renderSummary(menuItems);
+      }
+      
+    }
+
+    // Initial render
+    renderMenu(menuItems);
+    renderSummary(menuItems);
+
+    function renderSummary(items) {
+    summaryContainer.innerHTML = "<h2>Order Summary</h2>"; // Clear the summary
+    let grandTotal = 0;
+
+    items.forEach(item => {
+      if (item.quantity > 0) {
+        const summaryItem = document.createElement("div");
+        summaryItem.classList.add("summary-item");
+        grandTotal += item.quantity * item.price;
+
+        summaryItem.innerHTML = `
+          <img src="${item.image}" alt="${item.name}">
+          <div>
+            <strong>${item.name}</strong><br>
+            Quantity: ${item.quantity} | Price: ₹${item.price.toFixed(2)}
+          </div>
+          <span>₹${(item.quantity * item.price).toFixed(2)}</span>
+        `;
+        summaryContainer.appendChild(summaryItem);
+      }
+    });
+
+    const grandTotalElement = document.createElement("div");
+    grandTotalElement.style.textAlign = "right";
+    grandTotalElement.style.fontWeight = "bold";
+    grandTotalElement.style.fontSize = "16px";
+    grandTotalElement.style.color = "#ff6f00";
+    grandTotalElement.textContent = `Grand Total: ₹${grandTotal.toFixed(2)}`;
+    summaryContainer.appendChild(grandTotalElement);
+
+    // Add WhatsApp share button
+    const shareButton = document.createElement("button");
+    shareButton.classList.add("buy-now");
+    shareButton.textContent = "Share on WhatsApp";
+    shareButton.onclick = shareOnWhatsApp;
+
+    summaryContainer.appendChild(shareButton);
+  }
+
+  // Function to share order summary on WhatsApp
+  function shareOnWhatsApp() {
+    let message = "🛒 *Order Summary* 🛒\n\n";
+    let grandTotal = 0;
+
+    menuItems.forEach(item => {
+      if (item.quantity > 0) {
+        message += `🍴 *${item.name}*\n   Quantity: ${item.quantity}\n   Price: ₹${item.price.toFixed(2)}\n   Total: ₹${(item.quantity * item.price).toFixed(2)}\n\n`;
+        grandTotal += item.quantity * item.price;
+      }
+    });
+
+    message += `*Grand Total: ₹${grandTotal.toFixed(2)}*\n\n`;
+    message += "Order now! 🚚";
+
+    const whatsappURL = `https://chat.whatsapp.com/C5mFYnUV5bIAqp72VBeXGT`;
+    window.open(whatsappURL, "_blank");
+  }
+
+  // Initial render
+  renderMenu(menuItems);
+  renderSummary(menuItems);
+    
+  </script>
+</body>
+</html>
